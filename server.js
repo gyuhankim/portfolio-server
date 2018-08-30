@@ -17,8 +17,6 @@ const blogRouter = require('./routes/blog');
 
 const app = express();
 
-const whitelist = ['http://www.ironworksdigital.com', 'http://www.josephkim.me', 'https://joseph-kim-portfolio.herokuapp.com/'];
-
 // === MIDDLEWARE === ///
 
 /* Create a static webserver */
@@ -37,13 +35,7 @@ app.use(
 /* Enable CORS */
 app.use(
   cors({
-    origin: function(origin, callback) {
-      if (whitelist.indexOf(origin) !== -1) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    }
+    origin: '*'
   })
 );
 
