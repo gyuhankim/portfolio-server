@@ -2,6 +2,7 @@
 
 const express = require('express');
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const Blog = require('../models/blog');
 
@@ -10,8 +11,7 @@ const router = express.Router();
 // GET ALL POSTS
 router.get('/', (req, res, next) => {
   Blog.find()
-    .populate('tags')
-    .sort({ updatedAt: 'desc' })
+    .sort({ createdAt: -1 })
     .then(results => {
       res.json(results);
     })
@@ -31,7 +31,6 @@ router.get('/:id', (req, res, next) => {
   }
 
   Blog.findById(id)
-    .populate('tags')
     .then(result => {
       if (result) {
         res.json(result);
@@ -46,7 +45,7 @@ router.get('/:id', (req, res, next) => {
 
 // CREATE POST
 router.post('/', (req, res, next) => {
-  const { title, content, tags = [] } = req.body;
+  const { title, content } = req.body;
 
   if (!title) {
     const err = new Error('Missing `title` in request body');
@@ -54,17 +53,8 @@ router.post('/', (req, res, next) => {
     return next(err);
   }
 
-  if (tags) {
-    tags.forEach(tag => {
-      if (!mongoose.Types.ObjectId.isValid(tag)) {
-        const err = new Error('The `tags.id` is not valid');
-        err.status = 400;
-        return next(err);
-      }
-    });
-  }
-
-  const newPost = { title, content, tags };
+  const newPost = { title, content };
+  newPost.createdAt = moment().format('llll');
 
   Blog.create(newPost)
     .then(result => {
@@ -80,7 +70,7 @@ router.post('/', (req, res, next) => {
 // UPDATE POST
 router.put('/:id', (req, res, next) => {
   const { id } = req.params;
-  const { title, content, tags = [] } = req.body;
+  const { title, content } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     const err = new Error('The `id` is not valid');
@@ -100,17 +90,9 @@ router.put('/:id', (req, res, next) => {
     return next(err);
   }
 
-  if (tags) {
-    tags.forEach(tag => {
-      if (!mongoose.Types.ObjectId.isValid(tag)) {
-        const err = new Error('The `tags.id` is not valid');
-        err.status = 400;
-        return next(err);
-      }
-    });
-  }
+  const updatedPost = { title, content };
 
-  const updatedPost = { title, content, tags };
+  updatedPost.updatedAt = moment().format('llll');
 
   Blog.findByIdAndUpdate(id, updatedPost, { new: true })
     .then(result => {

@@ -11,16 +11,15 @@ const blogSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  tags: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Tag'
-    }
-  ]
+  createdAt: {
+    type: String,
+    required: true
+  },
+  updatedAt: {
+    type: String
+  }
 });
 
-// Add `createdAt` and `updatedAt` fields
-blogSchema.set('timestamps', true);
 
 blogSchema.set('toObject', {
   virtuals: true,

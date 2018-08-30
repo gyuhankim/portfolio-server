@@ -14,7 +14,6 @@ const jwtStrategy = require('./passport/jwt');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const blogRouter = require('./routes/blog');
-const tagsRouter = require('./routes/tags');
 
 const app = express();
 
@@ -47,7 +46,6 @@ passport.use(jwtStrategy);
 app.use('/api/register', usersRouter);
 app.use('/api/login', authRouter);
 app.use('/api/blog', blogRouter);
-app.use('/api/tags', tagsRouter);
 
 // Custom 404 Handler
 app.use((req, res, next) => {
