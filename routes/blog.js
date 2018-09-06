@@ -11,7 +11,7 @@ const router = express.Router();
 // GET ALL POSTS
 router.get('/', (req, res, next) => {
   Blog.find()
-    .sort({ createdAt: -1 })
+    .sort({ dbTime: -1 })
     .then(results => {
       res.json(results);
     })
@@ -54,7 +54,8 @@ router.post('/', (req, res, next) => {
   }
 
   const newPost = { title, content };
-  newPost.createdAt = moment().format('llll');
+  newPost.createdAt = moment().format('ll');
+  newPost.dbTime = new Date().getTime();
 
   Blog.create(newPost)
     .then(result => {

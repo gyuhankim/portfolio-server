@@ -17,6 +17,10 @@ const blogSchema = new mongoose.Schema({
   },
   updatedAt: {
     type: String
+  },
+  dbTime: {
+    type: Number,
+    required: true
   }
 });
 
