@@ -4,7 +4,7 @@
 - [Introduction](#introduction)
 - [Tech Stack](#tech-stack)
 - [Blog Model](#blog-model)
-  - [Post Schema](#-post-schema)
+  - [Post Schema](#post-schema)
 - [Posts Endpoint](#posts-endpoint)
 
 ## Introduction
